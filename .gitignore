@@ -1,0 +1,16 @@
+# Pixlet / Tidbyt
+*.webp
+*.gif
+output-*.gif
+
+# Config fixtures with real locations (keep templates, ignore personal)
+config-*.json
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.tmp
