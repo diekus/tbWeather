@@ -150,11 +150,12 @@ def render_error():
     )
 
 def render_weather(reading):
-    """POPULATED state — two-row layout with icon + temperature + condition + feels-like."""
-    temp_text      = "%d°" % reading["temp_c"]
-    feels_text     = "Feels %d°" % reading["feels_like_c"]
+    """POPULATED state — icon + temperature + location + condition + feels-like."""
+    temp_text       = "%d°" % reading["temp_c"]
+    feels_text      = "Feels %d°" % reading["feels_like_c"]
     condition_label = reading["condition_label"]
-    icon_src       = _icon_for(reading["condition"])
+    location        = reading["location"]
+    icon_src        = _icon_for(reading["condition"])
 
     # Marquee scrolls only when condition label exceeds display width
     condition_widget = render.Marquee(
@@ -171,22 +172,34 @@ def render_weather(reading):
     return render.Root(
         child = render.Column(
             children = [
-                # Row 1: icon + temperature (dominant)
+                # Row 1: icon + temperature (dominant) + location name (right-aligned)
                 render.Row(
                     children = [
-                        render.Image(
-                            src    = icon_src,
-                            width  = ICON_SIZE,
-                            height = ICON_SIZE,
+                        render.Row(
+                            children = [
+                                render.Image(
+                                    src    = icon_src,
+                                    width  = ICON_SIZE,
+                                    height = ICON_SIZE,
+                                ),
+                                render.Box(width = 2, height = ICON_SIZE),
+                                render.Text(
+                                    content = temp_text,
+                                    font    = "6x13",
+                                    color   = "#FFFFFF",
+                                ),
+                            ],
+                            cross_align = "center",
                         ),
-                        render.Box(width = 2, height = ICON_SIZE),
                         render.Text(
-                            content = temp_text,
-                            font    = "6x13",
-                            color   = "#FFFFFF",
+                            content = location,
+                            font    = "tb-8",
+                            color   = "#666666",
                         ),
                     ],
                     cross_align = "center",
+                    main_align  = "space_between",
+                    expanded    = True,
                 ),
                 # Row 2: condition label (scrolls if too wide)
                 condition_widget,
@@ -225,6 +238,7 @@ def geocode(city_name):
         "lat":      str(first.get("latitude", "")),
         "lng":      str(first.get("longitude", "")),
         "timezone": str(first.get("timezone", "UTC")),
+        "name":     str(first.get("name", city_name)),
     }
 
 def fetch_weather(lat, lng, timezone):
@@ -283,4 +297,5 @@ def main(config):
     if reading == None:
         return render_error()
 
+    reading["location"] = coords["name"]
     return render_weather(reading)
