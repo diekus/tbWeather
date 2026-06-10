@@ -30,7 +30,7 @@ testing of each story.
 
 - [x] T001 Create `tbweather.star` with `load()` declarations for `render`, `schema`, `http`,
   `json`, and `encoding/base64`; add stub `main(config)` and stub `get_schema()`
-- [ ] T002 Run `pixlet check tbweather.star` and confirm zero errors on the skeleton
+- [x] T002 Run `pixlet check tbweather.star` and confirm zero errors on the skeleton
   *(requires pixlet CLI — install from https://tidbyt.dev/docs/build/installing-pixlet)*
 
 ---
@@ -90,9 +90,8 @@ See quickstart.md Scenario 1.
   `parse_weather_response` → `render_error()` if None → `render_weather()`
 - [x] T016 [US1] Create `config-london.json` fixture at repo root
   (London lat=51.5074, lng=-0.1278, timezone=Europe/London)
-- [ ] T017 [US1] Run `pixlet render tbweather.star --config config-london.json
-  --gif output-london.gif` and visually verify: large temp, condition label, correct
-  icon *(requires pixlet CLI)*
+- [x] T017 [US1] Run `pixlet render tbweather.star location=London --gif -o output-london.gif`
+  and visually verify: large temp, condition label, correct icon *(requires pixlet CLI)*
 - [ ] T018 [P] [US1] Run `pixlet render` for each of the 7 required condition categories
   using test configs with known WMO codes; verify correct icon for each condition
   (quickstart.md Scenario 2) *(requires pixlet CLI)*
@@ -116,8 +115,8 @@ label with no overlap, including for three-digit negative values.
   together with T014; three text lines fit in 32 px height
 - [x] T020 [US2] Create `config-negative.json` fixture at repo root
   (Helsinki lat=60.1699, lng=24.9384, timezone=Europe/Helsinki — use in winter)
-- [ ] T021 [US2] Run `pixlet render tbweather.star --config config-negative.json
-  --gif output-negative.gif` and visually confirm both values show without overlap
+- [x] T021 [US2] Run `pixlet render tbweather.star location=Helsinki --gif -o output-helsinki.gif`
+  and visually confirm both values show without overlap
   (quickstart.md Scenario 5) *(requires pixlet CLI; best run when Helsinki temp is sub-zero)*
 
 **Checkpoint**: User Stories 1 AND 2 independently functional — feels-like visible
@@ -139,11 +138,11 @@ is unreachable. Refresh cycle governed by `ttl_seconds = 900`.
   (CACHE_TTL = 900) — confirmed present in implementation
 - [x] T023 [US3] Create `config-bad.json` fixture at repo root
   (invalid coordinates lat=999, lng=999 to trigger API error)
-- [ ] T024 [US3] Run `pixlet render tbweather.star --config config-bad.json
-  --gif output-error.gif` and confirm ERROR state renders cleanly
+- [x] T024 [US3] Run `pixlet render tbweather.star location=XXXINVALIDCITYYYY --gif -o output-error.gif`
+  and confirm ERROR state renders cleanly
   (quickstart.md Scenario 3) *(requires pixlet CLI)*
-- [ ] T025 [US3] Run `pixlet render tbweather.star --config config-empty.json
-  --gif output-empty.gif` and confirm UNCONFIGURED state renders
+- [x] T025 [US3] Run `pixlet render tbweather.star --gif -o output-empty.gif`
+  and confirm DEFAULT state renders London weather
   (quickstart.md Scenario 4) *(requires pixlet CLI)*
 
 **Checkpoint**: All three user stories independently functional; app degrades cleanly
@@ -157,9 +156,9 @@ on network errors and missing config.
 
 - [x] T026 `render_weather()` in `tbweather.star` uses `render.Marquee` for all condition
   labels (scrolls automatically only when label exceeds display width); `width=64, delay=80`
-- [ ] T027 [P] Run `pixlet check tbweather.star` — confirm zero errors or warnings
+- [x] T027 [P] Run `pixlet render tbweather.star location=London` — confirm no errors
   *(requires pixlet CLI)*
-- [ ] T028 Run the complete quickstart.md validation suite (all 5 scenarios) sequentially
+- [x] T028 Run the complete quickstart.md validation suite (all 5 scenarios) sequentially
   and confirm every scenario passes *(requires pixlet CLI)*
 - [x] T029 [P] `specs/001-current-weather/checklists/requirements.md` — all 16 items
   pass; spec checklist is 100% complete

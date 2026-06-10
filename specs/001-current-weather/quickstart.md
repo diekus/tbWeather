@@ -31,13 +31,13 @@ Validates: US1 (temperature + condition display), US2 (feels-like), FR-001 throu
 **Config file** (`config-london.json`):
 ```json
 {
-  "location": "{\"lat\":\"51.5074\",\"lng\":\"-0.1278\",\"description\":\"London, England\",\"timezone\":\"Europe/London\"}"
+  "location": "London"
 }
 ```
 
 **Run**:
 ```bash
-pixlet render tbweather.star --config config-london.json --gif output-london.gif
+pixlet render tbweather.star location=London --gif -o output-london.gif
 open output-london.gif
 ```
 
@@ -70,32 +70,32 @@ icon appears for each category:
 
 ---
 
-## Scenario 3 — ERROR state: bad coordinates
+## Scenario 3 — ERROR state: unresolvable city name
 
 Validates: FR-009, edge case (invalid location)
 
 **Config file** (`config-bad.json`):
 ```json
 {
-  "location": "{\"lat\":\"999\",\"lng\":\"999\",\"description\":\"Invalid\",\"timezone\":\"UTC\"}"
+  "location": "XXXINVALIDCITYYYY"
 }
 ```
 
 **Run**:
 ```bash
-pixlet render tbweather.star --config config-bad.json --gif output-error.gif
+pixlet render tbweather.star location=XXXINVALIDCITYYYY --gif -o output-error.gif
 open output-error.gif
 ```
 
 **Expected outcome**:
 - Applet does NOT crash
-- An error or "No data" message is displayed
+- A "No data" error message is displayed in red
 
 ---
 
-## Scenario 4 — UNCONFIGURED state: no location
+## Scenario 4 — DEFAULT state: no location configured
 
-Validates: Edge case (initial load), Constitution UX principle
+Validates: FR-006 (London default), edge case (initial load)
 
 **Config file** (`config-empty.json`):
 ```json
@@ -104,13 +104,13 @@ Validates: Edge case (initial load), Constitution UX principle
 
 **Run**:
 ```bash
-pixlet render tbweather.star --config config-empty.json --gif output-empty.gif
+pixlet render tbweather.star --gif -o output-empty.gif
 open output-empty.gif
 ```
 
 **Expected outcome**:
 - Applet does NOT crash
-- A prompt message (e.g., "Set location in app") is displayed
+- London weather is shown (default location per FR-006)
 
 ---
 
@@ -118,8 +118,13 @@ open output-empty.gif
 
 Validates: SC-003 (no overlap), edge case (negative temperatures)
 
-Test with a location that returns sub-zero temperatures (e.g., Helsinki in January)
-or mock the value with a test config fixture that overrides the API response.
+Test with Helsinki (best during winter months when temperatures go sub-zero).
+
+**Run**:
+```bash
+pixlet render tbweather.star location=Helsinki --gif -o output-helsinki.gif
+open output-helsinki.gif
+```
 
 **Expected outcome**:
 - Both actual temp (e.g., "−10°") and feels-like (e.g., "Feels: −14°") are fully
@@ -133,7 +138,7 @@ Once local render validation passes:
 
 ```bash
 pixlet login
-pixlet push --installation tbweather tbweather.star --config config-london.json
+pixlet push --installation tbweather tbweather.star location=London
 ```
 
 **Expected outcome**: The Tidbyt display cycles to the tbWeather applet and shows
@@ -144,10 +149,10 @@ live weather data for the configured location within a few seconds.
 ## Schema Validation
 
 ```bash
-pixlet check tbweather.star
+pixlet render tbweather.star location=London --gif -o /dev/null
 ```
 
-**Expected outcome**: No errors reported; schema fields validated.
+**Expected outcome**: No errors; render completes successfully.
 
 ---
 

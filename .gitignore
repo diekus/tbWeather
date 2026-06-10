@@ -3,8 +3,9 @@
 *.gif
 output-*.gif
 
-# Config fixtures with real locations (keep templates, ignore personal)
-config-*.json
+# Rendered output files
+output-*.gif
+output-*.webp
 
 # macOS
 .DS_Store
