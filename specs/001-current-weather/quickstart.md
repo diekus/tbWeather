@@ -45,7 +45,8 @@ open output-london.gif
 - Current temperature shown in large text (°C)
 - A condition label visible (e.g., "Partly Cloudy")
 - A matching weather icon displayed to the left of the temperature
-- "Feels like X°" shown as a secondary line
+- Feels-like temperature shown inline as "(~X°)" in smaller grey text next to the actual temperature
+- City name shown as the bottom row
 - All text fits within the 64 × 32 frame with no truncation of temperature or condition
 
 ---
@@ -127,8 +128,8 @@ open output-helsinki.gif
 ```
 
 **Expected outcome**:
-- Both actual temp (e.g., "−10°") and feels-like (e.g., "Feels: −14°") are fully
-  visible without overlap or truncation
+- Both actual temp (e.g., "−10°") and feels-like (e.g., "(~−14°)") are fully
+  visible inline without overlap or truncation
 
 ---
 

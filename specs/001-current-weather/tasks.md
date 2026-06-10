@@ -84,7 +84,7 @@ See quickstart.md Scenario 1.
   decodes JSON, extracts `temperature_2m`, `apparent_temperature`, `weather_code`,
   derives `condition` and `condition_label`; returns dict or `None` on missing fields
 - [x] T014 [US1] Implement `render_weather(reading)` in `tbweather.star` — Column layout:
-  Row 1 (icon 12px + temp "6x13"), Row 2 (condition Marquee), Row 3 (feels-like "tb-8")
+  Row 1 (icon 12px + temp "6x13" + feels-like "(~N°)" "tb-8"), Row 2 (condition Marquee), Row 3 (location "tb-8")
 - [x] T015 [US1] Wire full dispatch in `main(config)` in `tbweather.star` —
   parse location JSON → `fetch_weather` → `render_error()` if None →
   `parse_weather_response` → `render_error()` if None → `render_weather()`
@@ -103,16 +103,16 @@ all 7 icon categories verified (SC-002 = 100%).
 
 ## Phase 4: User Story 2 — View Feels-Like Temperature (Priority: P2)
 
-**Goal**: Add a secondary feels-like temperature line to the existing layout.
+**Goal**: Show feels-like temperature alongside the actual temperature.
 
-**Independent Test**: `pixlet render` output shows "Feels X°" below the condition
-label with no overlap, including for three-digit negative values.
+**Independent Test**: `pixlet render` output shows "(~X°)" inline with the temperature
+in Row 1, with no overlap including three-digit negative values.
 
 ### Implementation for User Story 2
 
-- [x] T019 [US2] `render_weather(reading)` in `tbweather.star` includes feels-like as
-  third row: `"Feels %d°"` in `"tb-8"` font (dim grey `"#888888"`) — already implemented
-  together with T014; three text lines fit in 32 px height
+- [x] T019 [US2] `render_weather(reading)` in `tbweather.star` includes feels-like inline
+  with temperature as `"(~%d°)"` in `"tb-8"` font (dim grey `"#888888"`); location name
+  shown in Row 3; three rows fit in 32 px height
 - [x] T020 [US2] Create `config-negative.json` fixture at repo root
   (Helsinki lat=60.1699, lng=24.9384, timezone=Europe/Helsinki — use in winter)
 - [x] T021 [US2] Run `pixlet render tbweather.star location=Helsinki --gif -o output-helsinki.gif`
