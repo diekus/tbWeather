@@ -1,0 +1,17 @@
+# Pixlet / Tidbyt
+*.webp
+*.gif
+output-*.gif
+
+# Rendered output files
+output-*.gif
+output-*.webp
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.tmp
