@@ -150,9 +150,9 @@ def render_error():
     )
 
 def render_weather(reading):
-    """POPULATED state — icon + temperature + location + condition + feels-like."""
+    """POPULATED state — icon + temperature + feels-like + condition + location."""
     temp_text       = "%d°" % reading["temp_c"]
-    feels_text      = "Feels %d°" % reading["feels_like_c"]
+    feels_text      = "(~%d°)" % reading["feels_like_c"]
     condition_label = reading["condition_label"]
     location        = reading["location"]
     icon_src        = _icon_for(reading["condition"])
@@ -172,42 +172,36 @@ def render_weather(reading):
     return render.Root(
         child = render.Column(
             children = [
-                # Row 1: icon + temperature (dominant) + location name (right-aligned)
+                # Row 1: icon + temperature + feels-like in parentheses
                 render.Row(
                     children = [
-                        render.Row(
-                            children = [
-                                render.Image(
-                                    src    = icon_src,
-                                    width  = ICON_SIZE,
-                                    height = ICON_SIZE,
-                                ),
-                                render.Box(width = 2, height = ICON_SIZE),
-                                render.Text(
-                                    content = temp_text,
-                                    font    = "6x13",
-                                    color   = "#FFFFFF",
-                                ),
-                            ],
-                            cross_align = "center",
+                        render.Image(
+                            src    = icon_src,
+                            width  = ICON_SIZE,
+                            height = ICON_SIZE,
                         ),
+                        render.Box(width = 2, height = ICON_SIZE),
                         render.Text(
-                            content = location,
+                            content = temp_text,
+                            font    = "6x13",
+                            color   = "#FFFFFF",
+                        ),
+                        render.Box(width = 2, height = 1),
+                        render.Text(
+                            content = feels_text,
                             font    = "tb-8",
-                            color   = "#666666",
+                            color   = "#888888",
                         ),
                     ],
                     cross_align = "center",
-                    main_align  = "space_between",
-                    expanded    = True,
                 ),
                 # Row 2: condition label (scrolls if too wide)
                 condition_widget,
-                # Row 3: feels-like temperature (secondary)
+                # Row 3: location name
                 render.Text(
-                    content = feels_text,
+                    content = location,
                     font    = "tb-8",
-                    color   = "#888888",
+                    color   = "#666666",
                 ),
             ],
         ),
